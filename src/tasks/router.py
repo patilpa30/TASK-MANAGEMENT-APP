@@ -1,0 +1,34 @@
+from fastapi import APIRouter
+from fastapi import status
+from fastapi.params import Depends
+from src.tasks import controller
+from src.tasks.dtos import TaskSchema
+from src.tasks.dtos import TaskResponseSchema
+from src.utils.db import get_db
+from typing import List
+from sqlalchemy.orm import Session
+from src.utils.helpers import is_authenticated
+from src.user.models import UserModel
+
+router = APIRouter(prefix="/tasks", tags=["Tasks"])
+
+@router.post("/create", response_model=TaskResponseSchema, status_code=status.HTTP_201_CREATED)
+def create_task(body : TaskSchema ,db: Session = Depends(get_db) , user: UserModel = Depends(is_authenticated)):
+    return controller.create_task(body, db , user)
+
+@router.get("/all_tasks" ,response_model=List[TaskResponseSchema] ,status_code=status.HTTP_200_OK)
+def get_all_tasks(db: Session = Depends(get_db), user: UserModel = Depends(is_authenticated)):
+    return controller.get_tasks(db, user)
+
+@router.get("/one_task/{task_id}" , response_model=TaskResponseSchema, status_code=status.HTTP_200_OK)
+def get_one_task(task_id : int, db: Session = Depends(get_db), user: UserModel = Depends(is_authenticated)):
+    return controller.get_one_tasks(task_id, db)
+
+@router.put("/update_task/{task_id}" , response_model=TaskResponseSchema, status_code=status.HTTP_201_CREATED)
+def update_task(task_id : int, body : TaskSchema ,db: Session = Depends(get_db) ,user: UserModel = Depends(is_authenticated)):
+    return controller.update_task(task_id, body, db ,user)
+
+@router.delete("/delete_task/{task_id}" ,response_model=None,  status_code=status.HTTP_204_NO_CONTENT)
+def delete_task(task_id : int, db: Session = Depends(get_db) , user: UserModel = Depends(is_authenticated)):
+    return controller.delete_task(task_id, db, user)
+
