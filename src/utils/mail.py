@@ -4,12 +4,12 @@ from fastapi_mail import ConnectionConfig, FastMail, MessageSchema, MessageType
 
 
 conf = ConnectionConfig(
-    MAIL_USERNAME ="patilpriti1930@gmail.com",
-    MAIL_PASSWORD = "yblu yzcl tarb pckl",
-    MAIL_FROM = "patilpriti1930@gmail.com",
+    MAIL_USERNAME ="username",
+    MAIL_PASSWORD = "*******",
+    MAIL_FROM = "user@email.com",
     MAIL_PORT = 465,
     MAIL_SERVER = "smtp.gmail.com",
-    MAIL_FROM_NAME="Priti",
+    MAIL_FROM_NAME="Desired name",
     MAIL_STARTTLS = False,
     MAIL_SSL_TLS = True,
     USE_CREDENTIALS = True,
